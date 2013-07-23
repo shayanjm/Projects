@@ -16,7 +16,9 @@
   prompt.get({
     properties: {
       digits: {
-        description: "How many digits of Pi should I calculate?"
+        description: "How many digits of Pi should I calculate?",
+        pattern: /[0-9]+/,
+        message: "Input must be numbers only."
       }
     }
   }, function (err, result) {
