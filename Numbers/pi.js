@@ -5,10 +5,12 @@
   var _ = require('underscore');
   var microtime = require('microtime');
 
+  // Basic debug boolean. If true, debug mode.
   var app_opt = {
       debug: false
   };
 
+  // Prompt set up. Prompts the user for an input for # of digits
   prompt.start();
   prompt.message = "Input :"
   prompt.get({
@@ -19,20 +21,25 @@
     }
   }, function (err, result) {
   	if (parseInt(result.digits) == 1) {
+      // Passes value to pi_chudnovsky_bs if value is 1
   		console.log("You said to calculate: " + result.digits + " digit");
   		var num = pi_chudnovsky_bs(result.digits - 1);
   		console.log("Pi result to " + result.digits + " digit: " + num);
   	}
     else if (parseInt(result.digits) > 1 && parseInt(result.digits) <= 15){
+      // If value is <= 15, we could get away with being "accurate" (putting a decimal in)
       console.log("You said to calculate: " + result.digits + " digits");
       var rawNum = pi_chudnovsky_bs(result.digits - 1);
       var num = rawNum / Math.pow(10,result.digits-1);
       console.log("Pi result to " + result.digits + " digits: " + num);
     }
   	else if (parseInt(result.digits) <= 0){
+      // You must be triping if the value is <= 0
   		console.log("You input: " + result.digits + " which is an invalid number. Input must be greater than 0.")
   	}
-  	else if (parseInt(result.digits) >= 15){
+  	else if (parseInt(result.digits) > 15){
+      // If the value is > 15, we have to remove the decimal. Why? Because any spec. over 15 concats. 
+      // We have to remove the decimal and make it an int in order to print ALL of the values specified (max digits for int is +/- 9007199254740992)
   		console.log("You said to calculate: " + result.digits + " digits");
   		var num = pi_chudnovsky_bs(result.digits - 1);
   		console.log("Pi result to " + result.digits + " digits: " + num);
