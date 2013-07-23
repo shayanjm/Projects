@@ -1,4 +1,4 @@
-  // Calculate Pi to x digits using Leibniz formula.
+  // Calculate Pi to x digits using Chudnovsky Algo. Fast as holy hell.
   var prompt = require("prompt");
   var mpz = require('bigint');
   var bignum = require('bigint');
