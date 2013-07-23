@@ -20,29 +20,33 @@
   }, function (err, result) {
   	if (parseInt(result.digits) == 1) {
   		console.log("You said to calculate: " + result.digits + " digit");
-  		var rawNum = pi_chudnovsky_bs(result.digits - 1);
-      var num = rawNum / Math.pow(10,result.digits-1);
+  		var num = pi_chudnovsky_bs(result.digits - 1);
   		console.log("Pi result to " + result.digits + " digit: " + num);
   	}
+    else if (parseInt(result.digits) > 1 && parseInt(result.digits) <= 15){
+      console.log("You said to calculate: " + result.digits + " digits");
+      var rawNum = pi_chudnovsky_bs(result.digits - 1);
+      var num = rawNum / Math.pow(10,result.digits-1);
+      console.log("Pi result to " + result.digits + " digits: " + num);
+    }
   	else if (parseInt(result.digits) <= 0){
   		console.log("You input: " + result.digits + " which is an invalid number. Input must be greater than 0.")
   	}
-  	else {
+  	else if (parseInt(result.digits) >= 15){
   		console.log("You said to calculate: " + result.digits + " digits");
-  		var rawNum = pi_chudnovsky_bs(result.digits - 1);
-      var num = rawNum / Math.pow(10,result.digits-1);
+  		var num = pi_chudnovsky_bs(result.digits - 1);
   		console.log("Pi result to " + result.digits + " digits: " + num);
   	}
   });
 
-function log(/*slurp*/) {
+function log() {
     "use strict";
     if (app_opt.debug) {
         console.log.apply(this, ["[DEBUG] - ".concat(arguments[0])]);
     }
 }
 
-function logError(/*slurp*/) {
+function logError() {
     "use strict";
     var new_args = arguments;
     new_args[0] = "[ERROR] - ".concat(arguments[0]);
@@ -178,59 +182,3 @@ function pi_chudnovsky_bs(digits) {
 
     return retVal;
 }
-
-var check_digits = {
-        100 : 70679,
-       1000 :  1989,
-      10000 : 75678,
-     100000 : 24646,
-    1000000 : 58151,
-   10000000 : 55897
-};
-
-function main() {
-    var min, max;
-    var time_start, time_end;
-    var digits, pi;
-
-    digits = 100;
-    pi = pi_chudnovsky_bs(digits);
-    console.log(pi);
-
-    min = 1;
-    max = 9;//10;
-
-    var range = _.range(min, max);
-    var i = 0;
-    for (i=0; i<= range.length; i++ ) {
-        var log10_digits = range[i];
-        console.log('Run %s of %s', log10_digits, max);
-
-        var _digits = Math.pow(10, log10_digits);
-
-        time_start = microtime.now();
-        var _pi = pi_chudnovsky_bs(_digits);
-        time_end = microtime.now();
-
-        console.log("chudnovsky_gmpy_mpz_bs: digits %s, time: [%s] seconds", _digits, (time_end - time_start)/1000000);
-
-        if(_.has(check_digits, _digits)) {
-            var last_five_digits = _pi.mod(100000);
-
-            if (last_five_digits.eq(check_digits[_digits])) {
-                console.log("Last 5 digits %s OK", last_five_digits);
-            }
-            else {
-                console.log("Last 5 digits %s wrong should be %s", last_five_digits, check_digits[_digits]);
-            }
-        }
-
-    }
-
-}
-
-// 20
-// js: 314159265358979323846264338327950288419716939937510
-// py: 314159265358979323846264338327950288419716939937510
-//main();
-module.exports = pi_chudnovsky_bs;
