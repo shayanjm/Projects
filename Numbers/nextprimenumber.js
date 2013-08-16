@@ -21,15 +21,26 @@ prompt.start();
       while(next%2==0){ // Calculate next prime number
         next++;
       }
-      console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + ".");
-      prompt.start();
-
-  	}
-  	while(on){
-  		while(next%2==0){
-  			next++;
-  		}
-      console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + ".");
-  	}
-  	// console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + ".");
-  });
+      console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + "."); // return next prime number
+      prompt2.start(); // Begin next prompt
+      while(on){
+        prompt2.get({
+          properties: {
+            answer2: {
+              description: "Do you want to see the next prime number?",
+              pattern:/(True|False)/,
+              message: "Answer must be True or False only."
+            }
+          }
+        }, function (err, result) {
+          if (result2.answer){
+            while(next%2==0){
+              next++;
+            }
+            console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + ".");
+          }
+          else{
+            process.exit;
+          }
+        });
+    }
