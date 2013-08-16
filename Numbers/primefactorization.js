@@ -13,7 +13,6 @@ prompt.start();
     }
   }, function (err, result) {
   	if (parseInt(result.digits) > 0) {
-      // Passes value to pi_chudnovsky_bs if value is 1
   		console.log("You said to calculate the prime factors of: " + result.digits + ".");
   		var factors = primeFactor(result.digits);
   		console.log("Factors of " + result.digits + ": " + factors);
