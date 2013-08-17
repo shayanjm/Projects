@@ -1,71 +1,39 @@
 // Next Prime number... Stupid implementation.
 var prompt = require("prompt");
 var async = require("async");
+var first = 0;
+var next = 1;
+var on = true;
 
 prompt.start();
-  prompt.message = "Input :"
-  prompt.get({
-    properties: {
-      answer: {
-        description: "Do you want to see the first prime number?",
-        pattern:/(True|False)/,
-        message: "Answer must be True or False only."
-      }
-    }
-  }, function (err, result) {
-
-  	var first = 0;
-  	var next = 1;
-  	var on = true;
-    console.log("The previously calculated prime number was "+ first +". The next prime number is " + next + ".");
-
-    async.doWhilst(
-      function (){ return on },
-      function getAnswer() {
+async.whilst(
+  function () { return on; },
+  function (callback) {
+    async.series(
+      function (callback){
         prompt.get({
-        properties: {
-          answer2: {
-            description: "Would you like to see the next prime number?",
-            pattern:/(True|False)/,
-            message: "Answer must be True or False only."
+          properties: {
+            answer: {
+              description: "Do you want to see the next prime number?",
+              pattern:/(True|False)/,
+              message: "Answer must be True or False only."
+            }
           }
-        }
-      }, function (err, result){
-        if (!(result.answer2)){
-          on = false;
-        }
-      });
-      },
-      process.exit(0)
-    );
-  });
-//   	if (result.answer) {
-//       on = true; // set "on" to True.
-//       while(next%2==0){ // Calculate next prime number
-//         next++;
-//       }
-//       console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + "."); // return next prime number
-//       prompt2.start(); // Begin next prompt
-//       while(on){
-//         prompt2.get({
-//           properties: {
-//             answer2: {
-//               description: "Do you want to see the next prime number?",
-//               pattern:/(True|False)/,
-//               message: "Answer must be True or False only."
-//             }
-//           }
-//         }, function (err, result) {
-//           if (result2.answer){
-//             while(next%2==0){
-//               next++;
-//             }
-//             console.log("The previously calculated prime number was "+ first + ". The next prime number is " + next + ".");
-//           }
-//           else{
-//             process.exit;
-//           }
-//         });
-//     }
-//   }
-// });
+        }, function (err, result){
+          if (!(result.answer)){
+            process.exit(0);
+          }
+          while(next%2==0){
+            next++;
+          }
+          console.log("The previously calculated prime number was "+first+". The next prime number is"+next+".");
+        });
+        callback(null, next);
+      }
+      );
+    setTimeout(callback, 1);
+    },
+  function (err) {
+
+  }
+);
