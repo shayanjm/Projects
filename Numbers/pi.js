@@ -1,33 +1,33 @@
   // Calculate Pi to x digits using Chudnovsky Algo. Fast as holy hell.
-  var prompt = require("prompt");
-  var mpz = require('bigint');
-  var bignum = require('bigint');
-  var _ = require('underscore');
-  var microtime = require('microtime');
+var prompt = require('prompt');
+var mpz = require('bigint');
+var bignum = require('bigint');
+var _ = require('underscore');
+var microtime = require('microtime');
 
-  // Basic debug boolean. If true, debug mode.
-  var app_opt = {
-      debug: false
-  };
+// Basic debug boolean. If true, debug mode.
+var app_opt = {
+    debug: false
+};
 
-  // Prompt set up. Prompts the user for an input for # of digits
-  prompt.start();
-  prompt.message = "Input :"
-  prompt.get({
-    properties: {
-      digits: {
-        description: "How many digits of Pi should I calculate?",
-        pattern: /[0-9]+/,
-        message: "Input must be numbers only."
+// Prompt set up. Prompts the user for an input for # of digits
+prompt.start();
+prompt.message = 'Input :'
+prompt.get({
+  properties: {
+    digits: {
+      description: 'How many digits of Pi should I calculate?',
+      pattern: /[0-9]+/,
+      message: "Input must be numbers only."
       }
     }
   }, function (err, result) {
-  	if (parseInt(result.digits) == 1) {
+    if (parseInt(result.digits) == 1) {
       // Passes value to pi_chudnovsky_bs if value is 1
-  		console.log("You said to calculate: " + result.digits + " digit");
-  		var num = pi_chudnovsky_bs(result.digits - 1);
-  		console.log("Pi result to " + result.digits + " digit: " + num);
-  	}
+      console.log("You said to calculate: " + result.digits + " digit");
+      var num = pi_chudnovsky_bs(result.digits - 1);
+      console.log("Pi result to " + result.digits + " digit: " + num);
+    }
     else if (parseInt(result.digits) > 1 && parseInt(result.digits) <= 15){
       // If value is <= 15, we could get away with being "accurate" (putting a decimal in)
       console.log("You said to calculate: " + result.digits + " digits");
@@ -35,17 +35,17 @@
       var num = rawNum / Math.pow(10,result.digits-1);
       console.log("Pi result to " + result.digits + " digits: " + num);
     }
-  	else if (parseInt(result.digits) <= 0){
+    else if (parseInt(result.digits) <= 0){
       // You must be triping if the value is <= 0
-  		console.log("You input: " + result.digits + " which is an invalid number. Input must be greater than 0.")
-  	}
-  	else if (parseInt(result.digits) > 15){
+      console.log("You input: " + result.digits + " which is an invalid number. Input must be greater than 0.")
+    }
+    else if (parseInt(result.digits) > 15){
       // If the value is > 15, we have to remove the decimal. Why? Because any spec. over 15 concats. 
       // We have to remove the decimal and make it an int in order to print ALL of the values specified (max digits for int is +/- 9007199254740992)
-  		console.log("You said to calculate: " + result.digits + " digits");
-  		var num = pi_chudnovsky_bs(result.digits - 1);
-  		console.log("Pi result to " + result.digits + " digits: " + num);
-  	}
+      console.log("You said to calculate: " + result.digits + " digits");
+      var num = pi_chudnovsky_bs(result.digits - 1);
+      console.log("Pi result to " + result.digits + " digits: " + num);
+    }
   });
 
 function log() {
