@@ -1,4 +1,5 @@
 // Next Prime number... Stupid implementation.
+// [1] - 2 - [3] - 4 - [5] - 6 - [7] - 8 - 9 - 10 - [11] - 12 - [13] - 14 - 15 - 16 - [17]
 var prompt = require('prompt');
 var first = 0;
 var next = 1;
@@ -22,8 +23,11 @@ function prompting(){
       
       // Deciding if the number is prime or not.
       while(next % 2 === 0){
-        while(next % 3 === 0){
-          next++;
+        next++;
+      }
+      while(next % 3 === 0){
+        if(next === 3){
+          return;
         }
         next++;
       }
